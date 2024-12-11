@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .cart {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 30%;
+            height: 100%;
+            background-color: black;
+            z-index: 1000;
+            overflow-y: auto;
+            transition: right 0.3s ease-in-out;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+        }
+        .cart-body {
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            color: #ccc;
+        }
+        .cart-footer {
+            padding: 20px;
+            background-color: black;
+            border-top: 1px solid #ccc;
+            position: fixed;
+            bottom: 0;
+            width: 30%;
+        }
+        .navbar-brand img {
+            width: 50px;
+        }
+        .nav-link {
+            color: black;
+        }
+        .nav-link input {
+            width: 400px;
+        }
+        section {
+            margin: 80px 80px 20px 80px;
+        }
+        section img {
+            width: 100%;
+        }
+        .card-body {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .card-body .card {
+            background-color: transparent;
+            color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            border-style: none;
+            padding: 40px;
+            text-align: center;
+            font-size: 1em;
+        }
+        .card-body .card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .card-body .card div {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: black;
+        }
+        .card-body .card div.price {
+            font-size: 1.1em;
+            color: black;
+            margin-bottom: 10px;
+        }
+        .card-body .card button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: black;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: black;
+            padding: 20px;
+        }
+        footer div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            color: white;
+        }
+        footer div img {
+            width: 50px;
+        }
+    </style>
+    <script>
+        let cart = [];
+
+        function addToCart(title, amount) {
+            const existingItemIndex = cart.findIndex(item => item.title === title);
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                cart.push({ title, amount, quantity: 1 });
+            }
+            alert("Added to wishlist");
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.amount * item.quantity;
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.title} (${item.quantity})</span>
+                        <span>₹${item.amount * item.quantity}</span>
+                        <button class="btn btn-danger btn-sm" onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                `;
+            });
+            document.getElementById('cartTotal').textContent = `Total: ₹${total}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCart() {
+            const cart = document.getElementById('cart');
+            if (cart.style.right === '-100%') {
+                cart.style.right = '0';
+            } else {
+                cart.style.right = '-100%';
+            }
+        }
+    </script>
+</head>
+<body>
+    <section>
+        <nav class="navbar navbar-expand-sm bg-white navbar-dark fixed-top">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo.png" alt="logo">
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <br>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <br>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="width: 50px;color: black;">
+                        MEN
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="width: 80px;color: black;">
+                        WOMEN
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="width: 60px;color: black;">
+                        KIDS
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="width: 150px;color: black;">
+                        Home and Living
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="width: 70px;color: black;">
+                        BEAUTY
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="width: 70px;color: black;">
+                        STUDIO
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="width: 450px;color: black;">
+                        <input type="text" value="Search or Products, Brands and more">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="toggleCart() " style="color: black;">
+                        <img src="images/profile.png" alt="profile" style="width: 5%;"> profile
+                        <img src="images/wishlist.png" alt="wishlist" style="width: 5%;"> wishlist
+                        <img src="images/bag.png" alt="bag" style="width: 5%;"> Bag
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+    <section>
+        <img src="images/Screenshot 2024-08-03 120457.png" alt="banner">
+    </section>
+    <section>
+        <img src="images/offer40-70.png" alt="offer">
+    </section>
+    <section>
+        <img src="images/coupon.png" alt="coupon">
+    </section>
+    <section>
+        <h1 style="text-align: center; margin-top: 50px;">Shop By Brand</h1>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 10px; width: 80%; gap: 30px; margin: auto; padding: 40px; padding-top: 100px;">
+            <div class="card">
+                <img src="images/random/women.png" alt="Women's Ethnic Wear">
+                <div>Women's Ethnic Wear</div>
+                <div class="price">1000</div>
+                <button onclick="addToCart('Womens Ethnic Wear', 1000)">Buy Now</button>
+            </div>
+            <div class="card">
+                <img src="images/random/leadiesWear.avif" alt="Women's Ethnic Wear">
+                <div>Women's Ethnic Wear</div>
+                <div class="price">2000</div>
+                <button onclick="addToCart('Womens Ethnic Wear', 2000)">Buy Now</button>
+            </div>
+            <div class="card">
+                <img src="images/random/saree.jpeg" alt="Saree">
+                <div>Saree</div>
+                <div class="price">3000</div>
+                <button onclick="addToCart('Saree', 3000)">Buy Now</button>
+            </div>
+            <div class="card">
+                <img src="images/random/menjeans.jpeg" alt="Men's Jeans">
+                <div>Men's Jeans</div>
+                <div class="price">1000</div>
+                <button onclick="addToCart('Mens Jeans', 1000)">Buy Now</button>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div>
+            <img src="images/logo.png" alt="logo">
+            <p>Discover the latest trends in fashion and shop from the largest collection of clothing and footwear.</p>
+        </div>
+        <div>
+            <p>Company</p>
+            <p>Contact us</p>
+            <p>FAQs</p>
+            <p>Shipping</p>
+            <p>Returns</p>
+        </div>
+        <div>
+            <p>Resources</p>
+            <p>Size Guide</p>
+            <p>Privacy Policy</p>
+            <p>Terms of Service</p>
+            <p>Site Map</p>
+        </div>
+    </footer>
+    <section>
+        <div class="cart" id="cart">
+            <div class="cart-header">
+                <h5 style="color: #ccc;">Your Wishlist</h5>
+                <span class="close-btn" onclick="toggleCart()" style="color: #ccc;">&times;</span>
+            </div>
+            <div class="cart-body" id="cartItems">
+                <!-- Wishlist items will be added here -->
+            </div>
+            <div class="cart-footer">
+                <div class="total" id="cartTotal" style="color: #ccc;">Total: ₹0</div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
